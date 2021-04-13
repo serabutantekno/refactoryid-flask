@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -9,6 +9,15 @@ def hello():
 @app.route("/greet/<username>", methods=["PUT", "POST"])
 def greet(username):
     return f"Hello, {username}!"
+
+@app.route("/user", methods=["POST"])
+def user():
+    name = request.json["name"]
+    data = {
+        "name"   : name,
+        "message": "Success!"
+    }
+    return data, 201, {"author": "refactory"}
 
 @app.route("/about")  # Jika diakses dengan trailing slash, hasil 404 Not Found.
 def about():
