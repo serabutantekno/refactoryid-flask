@@ -6,6 +6,18 @@ app = Flask(__name__)
 def hello():
     return "Hello Refactory! Development mode."
 
+@app.route("/greet/<username>", methods=["PUT", "POST"])
+def greet(username):
+    return f"Hello, {username}!"
+
+@app.route("/about")  # Jika diakses dengan trailing slash, hasil 404 Not Found.
+def about():
+    return "ABOUT PAGE"
+
+@app.route("/contact/")  # Diakses tanpa trailing slash akan diredirect ke /contact.
+def contact():
+    return "CONTACT PAGE"
+
 
 # Uncomment code below if you do not export FLASK_APP to your environment
 # WARNING: not recommended
