@@ -1,4 +1,5 @@
 from app import app
+from flask import url_for, redirect
 
 @app.route("/")
 def hello():
@@ -24,6 +25,16 @@ def about():
 @app.route("/contact/")  # Diakses tanpa trailing slash akan diredirect ke /contact.
 def contact():
     return "CONTACT PAGE"
+
+
+@app.route("/image")
+def image():
+    return redirect(url_for("static", filename="images/toko.jpg"))
+
+
+@app.route("/index")
+def index():
+    return redirect(url_for("static", filename="index.html"))
 
 
 # Uncomment code below if you do not export FLASK_APP to your environment
