@@ -1,4 +1,5 @@
 from app import app, redirect, request, url_for
+from werkzeug.utils import secure_filename
 import os
 
 
@@ -39,7 +40,8 @@ def user():
     if "image" not in request.files:
         return {"message": "no selected file"}, 400
     image = request.files["image"]
-    image.save(os.path.join(app.config["UPLOAD_FOLDER"], image.filename))
+    filename = secure_filename(image.filename)
+    image.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
     return {"message": "success"}, 201
 
 
