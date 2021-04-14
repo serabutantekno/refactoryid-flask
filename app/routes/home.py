@@ -3,6 +3,9 @@ from werkzeug.utils import secure_filename
 import os
 
 
+ALLOWED_EXTENSION = {"pdf", "png", "jpg", "jpeg"}
+
+
 @app.route("/")
 def hello():
     return "Hello Refactory! Development mode."
@@ -33,6 +36,10 @@ def index():
     return redirect(url_for("static", filename="index.html"))
 
 
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSION
+
+
 @app.route("/user", methods=["POST"])
 def user():
     UPLOAD_FOLDER = "./app/static/uploads"
@@ -40,9 +47,12 @@ def user():
     if "image" not in request.files:
         return {"message": "no selected file"}, 400
     image = request.files["image"]
-    filename = secure_filename(image.filename)
-    image.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-    return {"message": "success"}, 201
+    if allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        return {"message": "success"}, 201
+    else:
+        return {"message": {"type": list(ALLOWED_EXTENSION)}}, 415
 
 
 # Uncomment code below if you do not export FLASK_APP to your environment
