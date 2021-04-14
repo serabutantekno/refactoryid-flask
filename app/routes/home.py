@@ -1,5 +1,7 @@
 from app import app
-from flask import url_for, redirect
+from flask import url_for, redirect, request
+import os
+
 
 @app.route("/")
 def hello():
@@ -9,14 +11,6 @@ def hello():
 def greet(username):
     return f"Hello, {username}!"
 
-@app.route("/user", methods=["POST"])
-def user():
-    name = request.json["name"]
-    data = {
-        "name"   : name,
-        "message": "Success!"
-    }
-    return data, 201, {"author": "refactory"}
 
 @app.route("/about")  # Jika diakses dengan trailing slash, hasil 404 Not Found.
 def about():
@@ -35,6 +29,17 @@ def image():
 @app.route("/index")
 def index():
     return redirect(url_for("static", filename="index.html"))
+
+
+@app.route("/user", methods=["POST"])
+def user():
+    UPLOAD_FOLDER = "./app/static/uploads"
+    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+    if "image" not in request.files:
+        return {"message": "no selected file"}, 400
+    image = request.files["image"]
+    image.save(os.path.join(app.config["UPLOAD_FOLDER"], image.filename))
+    return {"message": "success"}, 201
 
 
 # Uncomment code below if you do not export FLASK_APP to your environment
