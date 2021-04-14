@@ -27,3 +27,18 @@ class User:
             return {"message": "success"}, 201
         else:
             return {"message": {"type": list(self.ALLOWED_EXTENSION)}}, 415
+    
+    def update(self, id):
+        return {
+            "message": f"update by id {id}"
+        }, 200
+    
+    def delete(self, id):
+        return {
+            "message": f"delete by id {id}"
+        }, 200
+    
+    def get_by_id(self, id):
+        return {
+            "message": f"get by id {id}"
+        }, 200

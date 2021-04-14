@@ -13,6 +13,16 @@ def user_route():
         return user.upload()
 
 
+@app.route("/user/<int:id>", methods=["GET", "PUT", "DELETE"])
+def user_route_id(id):
+    if request.method == "GET":
+        return user.get_by_id(id)
+    elif request.method == "PUT":
+        return user.update(id)
+    elif request.method == "DELETE":
+        return user.delete(id)
+
+
 # @app.route("/")
 # def hello():
 #     return "Hello Refactory! Development mode."
