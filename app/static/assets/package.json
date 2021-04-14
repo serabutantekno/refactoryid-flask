@@ -1,0 +1,11 @@
+{
+  "name": "refactory-course-flask-assets",
+  "version": "1.0.0",
+  "description": "Belajar Flask",
+  "main": "index.js",
+  "author": "Madyan",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^5.0.0-beta3"
+  }
+}
