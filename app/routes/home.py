@@ -1,11 +1,11 @@
-from app import app
-from flask import url_for, redirect, request
+from app import app, redirect, request, url_for
 import os
 
 
 @app.route("/")
 def hello():
     return "Hello Refactory! Development mode."
+
 
 @app.route("/greet/<username>", methods=["PUT", "POST"])
 def greet(username):
@@ -15,6 +15,7 @@ def greet(username):
 @app.route("/about")  # Jika diakses dengan trailing slash, hasil 404 Not Found.
 def about():
     return "ABOUT PAGE"
+
 
 @app.route("/contact/")  # Diakses tanpa trailing slash akan diredirect ke /contact.
 def contact():
