@@ -64,6 +64,9 @@ class User:
         }, 200
     
     def get_by_id(self, id):
+        data = model_user.User.query.get(id)
+        result = data.data_to_json()
         return {
-            "message": f"get by id {id}"
+            "message": f"get by id {id}",
+            "data": result
         }, 200
