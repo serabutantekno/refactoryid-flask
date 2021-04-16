@@ -59,8 +59,17 @@ class User:
         }, 200
     
     def delete(self, id):
+        try:
+            data = model_user.User.query.get(id)
+            db.session.delete(data)
+            db.session.commit()
+        except Exception as err:
+            print(err)
+            return {
+                "message": "data not found"
+            }
         return {
-            "message": f"delete by id {id}"
+            "message": "success deleting a user"
         }, 200
     
 
