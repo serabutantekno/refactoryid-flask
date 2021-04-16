@@ -1,4 +1,6 @@
-from app import app, redirect, request, url_for
+from app import app, db, redirect, request, url_for
+from app.models import User as model_user
+from app.controllers.AuthController import AuthController as Auth
 from werkzeug.utils import secure_filename
 import os
 
@@ -27,6 +29,28 @@ class User:
             return {"message": "success"}, 201
         else:
             return {"message": {"type": list(self.ALLOWED_EXTENSION)}}, 415
+    
+
+    def create(self):
+        auth = Auth()
+        if request.form:
+            try:
+                data = request.form
+                user = data.copy()
+                user["password"], user["salt"] = auth.encrypt(user["password"])
+                post = model_user.User(**user)
+                db.session.add(post)
+                db.session.commit()
+            except Exception as error:
+                print(error)
+                return {
+                    "message": "something error"
+                }, 500
+            return {
+                "message": "user is created",
+                "data": data
+            }, 201
+    
     
     def update(self, id):
         return {

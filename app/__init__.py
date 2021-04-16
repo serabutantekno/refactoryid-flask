@@ -12,5 +12,4 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, directory="app/migrations")
-
-from app.models import Todo, User # need to import the models for migrating here (the order matters)
+from app.models import User, Todo # need to import the models for migrating here (the order matters)

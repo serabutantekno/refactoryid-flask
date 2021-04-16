@@ -10,7 +10,7 @@ def user_route():
     if request.method == "GET":
         return user.index()
     elif request.method == "POST":
-        return user.upload()
+        return user.create()
 
 
 @app.route("/user/<int:id>", methods=["GET", "PUT", "DELETE"])
