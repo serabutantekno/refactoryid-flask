@@ -41,6 +41,7 @@ class User:
                 post = model_user.User(**user)
                 db.session.add(post)
                 db.session.commit()
+                result = model_user.User.data_to_json(post)
             except Exception as error:
                 print(error)
                 return {
@@ -48,7 +49,7 @@ class User:
                 }, 500
             return {
                 "message": "user is created",
-                "data": data
+                "data": result
             }, 201
     
     
