@@ -5,8 +5,33 @@ from werkzeug.utils import secure_filename
 import os
 
 
+class BASE_RESPONSE():
+
+    def base_response(self, message=None, data=[], status_code=200):
+        if type(data) is not list:
+            result = []
+            result.append(data)
+        else:
+            result = data
+        
+        return {
+            "message": message,
+            "data": result
+        }, status_code
+    
+    
+    def error(self):
+        return self.base_response(message="something error", status_code=500)
+    
+
+    def data_not_found(self):
+        return self.base_response(message="data not found", status_code=404)
+
+
+
 class User:
 
+    RESPONSE = BASE_RESPONSE()
     ALLOWED_EXTENSION = {"pdf", "png", "jpg", "jpeg"}
 
     def index(self):
@@ -41,16 +66,13 @@ class User:
                 post = model_user.User(**user)
                 db.session.add(post)
                 db.session.commit()
-                result = model_user.User.data_to_json(post)
             except Exception as error:
                 print(error)
-                return {
-                    "message": "something error"
-                }, 500
-            return {
-                "message": "user is created",
-                "data": result
-            }, 201
+                return self.RESPONSE.error()
+            data = model_user.User.data_to_json(post)
+            return self.RESPONSE.base_response(message="created", data=data, status_code=201)
+        else:
+            return {"message": "no changes detected"}
     
     
     def update(self, id):
