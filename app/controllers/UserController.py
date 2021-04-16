@@ -63,6 +63,16 @@ class User:
             "message": f"delete by id {id}"
         }, 200
     
+
+    def get_all(self):
+        data = model_user.User.query.all()
+        result = [model_user.User.data_to_json(user) for user in data]
+        return {
+            "message": "get all users",
+            "data": result
+        }
+    
+    
     def get_by_id(self, id):
         data = model_user.User.query.get(id)
         result = data.data_to_json()

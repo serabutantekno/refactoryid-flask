@@ -8,7 +8,7 @@ user = User()
 @app.route("/user", methods=["GET", "POST"])
 def user_route():
     if request.method == "GET":
-        return user.index()
+        return user.get_all()
     elif request.method == "POST":
         return user.create()
 
