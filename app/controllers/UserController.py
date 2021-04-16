@@ -54,10 +54,23 @@ class User:
     
     
     def update(self, id):
-        return {
-            "message": f"update by id {id}"
-        }, 200
-    
+        if request.form:
+            try:
+                data_update = request.form
+                data = model_user.User.query.filter_by(id=id)
+                data.update(data_update)
+                db.session.commit()
+            except Exception as err:
+                print(err)
+                return {
+                    "message": "failed to update"
+                }
+            return {
+                "message": "a user data updated",
+                "data": [model_user.User.data_to_json(data) for data in data]
+            }, 200
+
+
     def delete(self, id):
         try:
             data = model_user.User.query.get(id)
