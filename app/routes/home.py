@@ -25,9 +25,12 @@ def user_route_id(id):
         return user.delete(id)
 
 
-@app.route("/todo", methods=["GET"])
+@app.route("/todo", methods=["GET", "POST"])
 def todo_route():
-    return todo.get_all()
+    if request.method == "GET":
+        return todo.get_all()
+    elif request.method == "POST":
+        return todo.create()
 
 
 # @app.route("/")

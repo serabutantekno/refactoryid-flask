@@ -16,7 +16,7 @@ class Todo(db.Model):
     def data_to_json(self):
         return {
             "id": self.id,
-            "todo": self.username,
-            "description": self.email,
-            "status": self.name,
+            "todo": self.todo,
+            "description": self.description,
+            "status": self.status,
         }
