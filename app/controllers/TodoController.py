@@ -57,3 +57,25 @@ class TodoController:
                 return self.RESPONSE.error()
             data = Todo.Todo.data_to_json(post)
             return self.RESPONSE.base_response(message="created", data=form, status_code=201)
+
+
+    def update_status(self, id):
+        todo = Todo.Todo.query.get(id)
+        print(todo.status)
+        if todo:
+            new_status = dict()
+            if todo.status == False:
+                new_status["status"] = True
+            else:
+                new_status["status"] = False
+            try:
+                data = Todo.Todo.query.filter_by(id=id)
+                data.update(new_status)
+                db.session.commit()
+            except Exception as error:
+                print(error)
+                return self.RESPONSE.error()
+            data = Todo.Todo.data_to_json(Todo.Todo.query.get(id))
+            return self.RESPONSE.base_response("success", data=data)
+        else:
+            return self.RESPONSE.data_not_found()
