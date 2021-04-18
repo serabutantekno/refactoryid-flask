@@ -11,3 +11,12 @@ class Todo(db.Model):
 
     def __repr__(self):
         return '<Todo %r>' % self.todo
+
+
+    def data_to_json(self):
+        return {
+            "id": self.id,
+            "todo": self.username,
+            "description": self.email,
+            "status": self.name,
+        }

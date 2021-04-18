@@ -1,8 +1,10 @@
 from app import app, redirect, request, url_for
 from app.controllers.UserController import User
+from app.controllers.TodoController import TodoController
 
 
 user = User()
+todo = TodoController()
 
 
 @app.route("/user", methods=["GET", "POST"])
@@ -21,6 +23,11 @@ def user_route_id(id):
         return user.update(id)
     elif request.method == "DELETE":
         return user.delete(id)
+
+
+@app.route("/todo", methods=["GET"])
+def todo_route():
+    return todo.get_all()
 
 
 # @app.route("/")
