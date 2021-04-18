@@ -1,10 +1,8 @@
-from app import app, redirect, request, url_for
+from app import app, request
 from app.controllers.UserController import User
-from app.controllers.TodoController import TodoController
 
 
 user = User()
-todo = TodoController()
 
 
 @app.route("/user", methods=["GET", "POST"])
@@ -23,30 +21,6 @@ def user_route_id(id):
         return user.update(id)
     elif request.method == "DELETE":
         return user.delete(id)
-
-
-@app.route("/todo", methods=["GET", "POST"])
-def todo_route():
-    if request.method == "GET":
-        return todo.get_all()
-    elif request.method == "POST":
-        return todo.create()
-
-
-@app.route("/todo/<int:id>", methods=["GET"])
-def todo_route_id(id):
-    if request.method == "GET":
-        return todo.get_by_id(id)
-
-
-@app.route("/todo/query")
-def todo_user():
-    return todo.get_by_user()
-
-
-@app.route("/todo/<int:id>/status")
-def todo_status(id):
-    return todo.update_status(id)
 
 
 # @app.route("/")
