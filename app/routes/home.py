@@ -39,6 +39,11 @@ def todo_route_id(id):
         return todo.get_by_id(id)
 
 
+@app.route("/todo/query")
+def todo_user():
+    return todo.get_by_user()
+
+
 # @app.route("/")
 # def hello():
 #     return "Hello Refactory! Development mode."
