@@ -33,6 +33,12 @@ def todo_route():
         return todo.create()
 
 
+@app.route("/todo/<int:id>", methods=["GET"])
+def todo_route_id(id):
+    if request.method == "GET":
+        return todo.get_by_id(id)
+
+
 # @app.route("/")
 # def hello():
 #     return "Hello Refactory! Development mode."
