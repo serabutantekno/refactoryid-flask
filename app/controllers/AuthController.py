@@ -1,5 +1,6 @@
 from flask import request
 from app.models.User import User
+from app.middlewares import AuthJwt
 import hashlib, string, random
 
 
@@ -20,7 +21,10 @@ class AuthController:
                 user_password = get_user.password
                 encrypted_password = hashlib.md5((password + salt).encode()).hexdigest()
                 if user_password == encrypted_password:
-                    return {"message": "success"}, 200
+                    return {
+                        "message": "success",
+                        "token": AuthJwt.encode(username=username, password=user_password)
+                    }, 200
                 else:
                     return {"message": "password unmatch"}, 401
             else:
