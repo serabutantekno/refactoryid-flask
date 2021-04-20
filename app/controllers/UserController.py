@@ -2,6 +2,7 @@ from app import app, db, redirect, request, url_for
 from app.models import User as model_user
 from app.controllers.AuthController import AuthController as Auth
 from app.controllers.BaseResponseController import BASE_RESPONSE
+from app.services.CloudinaryUpload import cloudinary_upload_image
 from werkzeug.utils import secure_filename
 import os
 
@@ -10,7 +11,7 @@ import os
 class User:
 
     RESPONSE = BASE_RESPONSE()
-    ALLOWED_EXTENSION = {"pdf", "png", "jpg", "jpeg"}
+    ALLOWED_EXTENSION = {"png", "jpg", "jpeg"}
 
     def index(self):
         return redirect(url_for("static", filename="example-template/index.html"))
@@ -36,11 +37,17 @@ class User:
 
     def create(self):
         auth = Auth()
+
+        if "image" in request.files:
+            if not self.allowed_file(request.files["image"].filename):
+                return {"message": {"type": list(self.ALLOWED_EXTENSION)}}, 415
+
         if request.form:
             try:
                 data = request.form
                 user = data.copy()
                 user["password"], user["salt"] = auth.encrypt(user["password"])
+                user["photo"] = cloudinary_upload_image()
                 post = model_user.User(**user)
                 db.session.add(post)
                 db.session.commit()
