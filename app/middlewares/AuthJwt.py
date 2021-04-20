@@ -3,6 +3,7 @@ import os
 import datetime
 from functools import wraps
 from flask import request
+from app import app
 
 
 def encode(username, password):
@@ -11,12 +12,12 @@ def encode(username, password):
         "password": password,
         "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
     }
-    token = jwt.encode(payload, key=os.getenv("JWT_SECRET"), algorithm="HS256")
+    token = jwt.encode(payload, key=app.config["JWT_SECRET"], algorithm="HS256")
     return token
 
 
 def decode(token):
-    return jwt.decode(token, key=os.getenv("JWT_SECRET"), algorithms="HS256")
+    return jwt.decode(token, key=app.config["JWT_SECRET"], algorithms="HS256")
 
 
 def token_required(func):
